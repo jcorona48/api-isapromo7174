@@ -1,8 +1,8 @@
 import express from "express";
 import morgan from "morgan";
 import fileUpload from "express-fileupload";
-import { userRoutes } from "./routes";
-import { connectDB } from "./utils/db";
+import { userRoutes } from "./routes/index.js";
+import { connectDB } from "./utils/db.js";
 const app = express();
 
 // Configuración

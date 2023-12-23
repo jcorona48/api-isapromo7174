@@ -1,5 +1,5 @@
-import User from "../models/User";
-import { filter } from "../helpers/Filter";
+import User from "../models/User.js";
+import { filter } from "../helpers/Filter.js";
 
 // Obtener un usuario por su id
 export const getUsers = async (req, res) => {

@@ -4,7 +4,7 @@ import {
     getUsers,
     updateUserById,
     deleteUserById,
-} from "../controllers/user.controllers";
+} from "../controllers/user.controllers.js";
 
 // Manejo de rutas de usuario
 // Todas las rutas de usuario empiezan con /user

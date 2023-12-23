@@ -1,4 +1,4 @@
-import { Schema, Model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 // Definir el esquema Usuario de la colección
 
@@ -89,6 +89,6 @@ const userSchema = new Schema(
 
 // Definir el modelo Usuario
 
-const User = Model("User", userSchema);
+const User = model("User", userSchema);
 
 export default User;

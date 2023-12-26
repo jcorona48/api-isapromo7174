@@ -1,16 +1,13 @@
 import { Schema, model } from "mongoose";
 
-
-
 const eventSchema = new Schema(
     {
-     
         codigo: {
             type: String,
             unique: true,
             required: true,
         },
-        NombreEvento: {
+        nombreEvento: {
             type: String,
             required: true,
         },
@@ -21,7 +18,7 @@ const eventSchema = new Schema(
 
         fechaFinal: {
             type: Date,
-            required: true,  
+            required: true,
         },
         lugar: {
             type: String,
@@ -29,7 +26,6 @@ const eventSchema = new Schema(
         direccion: {
             type: String,
         },
-
     },
     {
         // Agregar los campos createdAt y updatedAt

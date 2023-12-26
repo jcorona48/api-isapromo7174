@@ -4,26 +4,32 @@ import {
     getEvent,
     updateEventById,
     deleteEventById,
+    createEvent,
 } from "../controllers/event.controllers.js";
+import { authMiddleware, verifyAdmin } from "../middlewares/auth.js";
 
-// Manejo de rutas de usuario
-// Todas las rutas de usuario empiezan con /user
+// Manejo de rutas de Evento
+// Todas las rutas de Evento empiezan con /event
 
 const router = Router();
-// Ruta para obtener usuario
-// GET /user/:id
+// Ruta para obtener Evento
+// GET /event/:id
 router.get("/:id", getEventById);
 
-// Ruta para obtener usuarios
-// GET /user/all
+// Ruta para obtener Eventos
+// GET /event/all
 router.get("/all", getEvent);
 
-// Ruta para actualizar usuario
-// PUT /user/:id
-router.put("/:id", updateEventById);
+// Ruta para actualizar Evento
+// PUT /event/:id
+router.put("/:id", [authMiddleware, verifyAdmin], updateEventById);
 
-// Ruta para eliminar usuario
-// DELETE /user/:id
-router.delete("/:id", deleteEventById);
+// Ruta para eliminar Evento
+// DELETE /event/:id
+router.delete("/:id", [authMiddleware, verifyAdmin], deleteEventById);
+
+// Ruta para crear Evento
+// POST /event
+router.post("/", [authMiddleware, verifyAdmin], createEvent);
 
 export default router;

@@ -4,7 +4,11 @@ import {
     getUsers,
     updateUserById,
     deleteUserById,
+    createUser,
+    login,
+    getUserByToken,
 } from "../controllers/user.controllers.js";
+import { authMiddleware } from "../middlewares/auth.js";
 
 // Manejo de rutas de usuario
 // Todas las rutas de usuario empiezan con /user
@@ -20,10 +24,22 @@ router.get("/all", getUsers);
 
 // Ruta para actualizar usuario
 // PUT /user/:id
-router.put("/:id", updateUserById);
+router.put("/:id", [authMiddleware], updateUserById);
 
 // Ruta para eliminar usuario
 // DELETE /user/:id
-router.delete("/:id", deleteUserById);
+router.delete("/:id", [authMiddleware], deleteUserById);
+
+// Ruta para crear usuario
+// POST /user
+router.post("/", [authMiddleware], createUser);
+
+// Ruta para iniciar sesión
+// POST /user/login
+router.post("/login", login);
+
+// Ruta para obtener usuario por token
+// GET /user/token
+router.get("/token", [authMiddleware], getUserByToken);
 
 export default router;

@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import { filter } from "../helpers/Filter.js";
+import { generateToken } from "../utils/jwt.js";
 
 // Obtener un usuario por su id
 export const getUsers = async (req, res) => {
@@ -30,6 +31,8 @@ export const createUser = async (req, res) => {
 
     try {
         const user = await new User(body); // Crear un usuario en memoria
+
+        user.password = await User.encryptPassword(user.password); // Cifrar la contraseña
 
         await user.save(); // Guardar usuario en la base de datos
 
@@ -75,4 +78,35 @@ export const deleteUserById = async (req, res) => {
     } catch (error) {
         res.status(500).json(error); // Retornar el error
     }
+};
+
+// Login de usuario
+
+export const login = async (req, res) => {
+    const { correo, password } = req.body; // Obtener correo y contraseña del body
+
+    const user = await User.findOne({ correo }).populate("rol"); // Buscar usuario por correo en la base de datos
+
+    if (!user)
+        return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error
+
+    const matchPassword = await User.comparePassword(password); // Comparar contraseña encriptada
+
+    if (!matchPassword)
+        return res.status(401).json({ mensaje: "Contraseña incorrecta" }); // Si la contraseña es incorrecta, retornar un error
+
+    const token = generateToken(user); // Generar token
+
+    res.json({ user, token }); // Retornar usuario y token
+};
+
+export const getUserByToken = async (req, res) => {
+    const { id } = req.user; // Obtener el id del usuario del token
+
+    const user = await User.findById(id); // Buscar usuario por id en la base de datos
+
+    if (!user)
+        return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error
+
+    res.json(user); // Retornar el usuario
 };

@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import bcrypt from "bcryptjs";
 
 // Definir el esquema Usuario de la colección
 
@@ -39,6 +40,9 @@ const userSchema = new Schema(
             type: String,
             required: true,
         },
+        password: {
+            type: String,
+        },
         foto: {
             type: String,
             required: true,
@@ -73,10 +77,15 @@ const userSchema = new Schema(
         correo: {
             type: String,
             required: true,
+            unique: true,
         },
         ultimoGradoEstudio: {
             type: String,
             required: true,
+        },
+        rol: {
+            ref: "Role",
+            type: Schema.Types.ObjectId,
         },
     },
     {
@@ -86,6 +95,16 @@ const userSchema = new Schema(
         versionKey: false,
     }
 );
+
+userSchema.statics.encryptPassword = async (password) => {
+    const salt = await bcrypt.genSalt(10);
+    console.log("Cifrando contrasena: " + password);
+    return await bcrypt.hash(password, salt);
+};
+
+userSchema.statics.comparePassword = async (password, receivedPassword) => {
+    return await bcrypt.compare(password, receivedPassword);
+};
 
 // Definir el modelo Usuario
 

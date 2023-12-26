@@ -1,11 +1,11 @@
 import { v2 as cloudinary } from "cloudinary";
+import {
+    CLOUDINARY_API_KEY,
+    CLOUDINARY_API_SECRET,
+    CLOUDINARY_CLOUD_NAME,
+} from "../config/env.config.js";
 
 // Cloudinary es la plataforma de almacenamiento de imágenes que vamos a utilizar
-
-// Configuración de Cloudinary
-const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
-const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
-const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 
 cloudinary.config({
     api_key: CLOUDINARY_API_KEY,

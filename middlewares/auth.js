@@ -1,7 +1,6 @@
 import { verifyToken } from "../utils/jwt.js";
 import User from "../models/User.js";
-
-const ADMIN_ROLE = process.env.ADMIN_ROLE || "Administrador";
+import { ADMIN_ROLE } from "../config/env.config.js";
 
 export const authMiddleware = async (req, res, next) => {
     const token = req.headers["x-token"];

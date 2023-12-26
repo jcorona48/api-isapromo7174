@@ -4,10 +4,8 @@ import fileUpload from "express-fileupload";
 import { userRoutes } from "./routes/index.js";
 import { eventRoutes } from "./routes/index.js";
 import { connectDB } from "./utils/db.js";
+import { PORT } from "./config/env.config.js";
 const app = express();
-
-// Configuración
-const PORT = process.env.PORT || 3000;
 
 // Middlewares
 app.use(morgan("dev"));
@@ -21,7 +19,7 @@ app.use(
 
 // Rutas
 app.use("/user", userRoutes);
-app.use("/event", eventRoutes)
+app.use("/event", eventRoutes);
 
 // Conectar a la base de datos
 connectDB();

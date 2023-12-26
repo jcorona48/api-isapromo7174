@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import fileUpload from "express-fileupload";
 import { userRoutes } from "./routes/index.js";
+import { eventRoutes } from "./routes/index.js";
 import { connectDB } from "./utils/db.js";
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(
 
 // Rutas
 app.use("/user", userRoutes);
+app.use("/event", eventRoutes)
 
 // Conectar a la base de datos
 connectDB();

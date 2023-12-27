@@ -21,6 +21,7 @@ app.use(
 // Rutas
 app.use("/user", userRoutes);
 app.use("/event", eventRoutes);
+app.use("/anecdota", anecdotaRoutes);
 
 // Conectar a la base de datos
 connectDB();

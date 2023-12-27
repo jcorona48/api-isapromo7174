@@ -3,6 +3,7 @@ import morgan from "morgan";
 import fileUpload from "express-fileupload";
 import { userRoutes } from "./routes/index.js";
 import { eventRoutes } from "./routes/index.js";
+import { anecdotaRoutes } from "./routes/index.js";
 import { connectDB } from "./utils/db.js";
 import { PORT } from "./config/env.config.js";
 const app = express();

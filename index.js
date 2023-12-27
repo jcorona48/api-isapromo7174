@@ -4,6 +4,7 @@ import fileUpload from "express-fileupload";
 import { userRoutes } from "./routes/index.js";
 import { eventRoutes } from "./routes/index.js";
 import { anecdotaRoutes } from "./routes/index.js";
+import { roleRoutes } from "./routes/index.js";
 import { connectDB } from "./utils/db.js";
 import { PORT } from "./config/env.config.js";
 const app = express();
@@ -22,6 +23,7 @@ app.use(
 app.use("/user", userRoutes);
 app.use("/event", eventRoutes);
 app.use("/anecdota", anecdotaRoutes);
+app.use("/role", roleRoutes)
 
 // Conectar a la base de datos
 connectDB();

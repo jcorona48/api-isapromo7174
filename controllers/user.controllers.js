@@ -4,9 +4,7 @@ import { generateToken } from "../utils/jwt.js";
 
 // Obtener un usuario por su id
 export const getUsers = async (req, res) => {
-    const query = filter(req.body); // Obtener el query de filtrado
-
-    const users = await User.find(query); // Buscar usuarios en la base de datos
+    const users = await User.find().populate("rol"); // Buscar usuarios en la base de datos
 
     res.json(users); // Retornar los usuarios
 };
@@ -16,7 +14,7 @@ export const getUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
     const { id } = req.params; // Obtener el id de los parámetros de la ruta
 
-    const user = await User.findById(id); // Buscar usuario por id en la base de datos
+    const user = await User.findById(id).populate("rol"); // Buscar usuario por id en la base de datos
 
     if (!user)
         return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error
@@ -52,7 +50,7 @@ export const updateUserById = async (req, res) => {
     try {
         const userUpdated = await User.findByIdAndUpdate(id, body, {
             new: true,
-        }); // Buscar y actualizar usuario por id en la base de datos
+        }).populate("rol"); // Buscar y actualizar usuario por id en la base de datos
 
         if (!userUpdated)
             return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error
@@ -90,7 +88,7 @@ export const login = async (req, res) => {
     if (!user)
         return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error
 
-    const matchPassword = await User.comparePassword(password); // Comparar contraseña encriptada
+    const matchPassword = await User.comparePassword(password, user.password); // Comparar contraseña encriptada
 
     if (!matchPassword)
         return res.status(401).json({ mensaje: "Contraseña incorrecta" }); // Si la contraseña es incorrecta, retornar un error
@@ -101,9 +99,7 @@ export const login = async (req, res) => {
 };
 
 export const getUserByToken = async (req, res) => {
-    const { id } = req.user; // Obtener el id del usuario del token
-
-    const user = await User.findById(id); // Buscar usuario por id en la base de datos
+    const user = req.user; // Obtener el id del usuario del token
 
     if (!user)
         return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error

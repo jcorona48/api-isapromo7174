@@ -18,7 +18,7 @@ router.get("/:id", getAnecdotaById);
 
 // Ruta para obtener Eventos
 // GET /event/all
-router.get("/all", getAnecdota);
+router.get("/", getAnecdota);
 
 // Ruta para actualizar Evento
 // PUT /event/:id

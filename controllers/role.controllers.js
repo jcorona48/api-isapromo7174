@@ -3,9 +3,7 @@ import Role from "../models/Role.js";
 
 // Obtener un usuario por su id
 export const getRoles = async (req, res) => {
-    const query = filter(req.body); // Obtener el query de filtrado
-
-    const roles = await Role.find(query); // Buscar usuarios en la base de datos
+    const roles = await Role.find(); // Buscar usuarios en la base de datos
 
     res.json(roles); // Retornar los usuarios
 };
@@ -16,12 +14,10 @@ export const getRoleById = async (req, res) => {
 
     const role = await Role.findById(id); // Buscar usuario por id en la base de datos
 
-    if (!role)
-        return res.status(404).json({ mensaje: "Rol no encontrado" }); // Si no existe el usuario, retornar un error
+    if (!role) return res.status(404).json({ mensaje: "Rol no encontrado" }); // Si no existe el usuario, retornar un error
 
     res.json(role); // Retornar el usuario
 };
-
 
 // Crear un usuario
 

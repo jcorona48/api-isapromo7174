@@ -4,7 +4,7 @@ import {
     getRoles,
     updateRoleById,
     deleteRoleById,
-    createRole
+    createRole,
 } from "../controllers/role.controllers.js";
 import { authMiddleware } from "../middlewares/auth.js";
 
@@ -18,7 +18,7 @@ router.get("/:id", getRoleById);
 
 // Ruta para obtener usuarios
 // GET /Role/all
-router.get("/all", getRoles);
+router.get("/", getRoles);
 
 // Ruta para actualizar usuario
 // PUT /Role/:id
@@ -30,6 +30,6 @@ router.delete("/:id", [authMiddleware], deleteRoleById);
 
 // Ruta para crear usuario
 // POST /Role
-router.post("/", [authMiddleware], createRole);
+router.post("/", /* [authMiddleware], */ createRole);
 
 export default router;

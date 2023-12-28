@@ -27,11 +27,6 @@ const userSchema = new Schema(
     {
         // Definir los campos del esquema
         // El campo _id es creado automáticamente por MongoDB
-        codigo: {
-            type: String,
-            unique: true,
-            required: true,
-        },
         nombres: {
             type: String,
             required: true,
@@ -42,14 +37,13 @@ const userSchema = new Schema(
         },
         password: {
             type: String,
+            required: true,
         },
         foto: {
             type: String,
-            required: true,
         },
         sexo: {
             type: String,
-            required: true,
         },
         estadoCivil: {
             type: String,
@@ -81,11 +75,11 @@ const userSchema = new Schema(
         },
         ultimoGradoEstudio: {
             type: String,
-            required: true,
         },
         rol: {
             ref: "Role",
             type: Schema.Types.ObjectId,
+            required: true,
         },
     },
     {

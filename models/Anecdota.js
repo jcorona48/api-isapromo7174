@@ -2,11 +2,6 @@ import { Schema, model } from "mongoose";
 
 const anecdotaSchema = new Schema(
     {
-        codigo: {
-            type: String,
-            unique: true,
-            required: true,
-        },
         titulo: {
             type: String,
             required: true,

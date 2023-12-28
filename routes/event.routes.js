@@ -18,7 +18,7 @@ router.get("/:id", getEventById);
 
 // Ruta para obtener Eventos
 // GET /event/all
-router.get("/all", getEvent);
+router.get("/", getEvent);
 
 // Ruta para actualizar Evento
 // PUT /event/:id

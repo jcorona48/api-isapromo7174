@@ -20,7 +20,7 @@ router.get("/:id", getUserById);
 
 // Ruta para obtener usuarios
 // GET /user/all
-router.get("/all", getUsers);
+router.get("/", getUsers);
 
 // Ruta para actualizar usuario
 // PUT /user/:id
@@ -32,7 +32,7 @@ router.delete("/:id", [authMiddleware], deleteUserById);
 
 // Ruta para crear usuario
 // POST /user
-router.post("/", [authMiddleware], createUser);
+router.post("/", /* [authMiddleware], */ createUser);
 
 // Ruta para iniciar sesión
 // POST /user/login
@@ -40,6 +40,6 @@ router.post("/login", login);
 
 // Ruta para obtener usuario por token
 // GET /user/token
-router.get("/token", [authMiddleware], getUserByToken);
+router.post("/token", [authMiddleware], getUserByToken);
 
 export default router;

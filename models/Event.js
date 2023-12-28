@@ -2,11 +2,6 @@ import { Schema, model } from "mongoose";
 
 const eventSchema = new Schema(
     {
-        codigo: {
-            type: String,
-            unique: true,
-            required: true,
-        },
         nombreEvento: {
             type: String,
             required: true,

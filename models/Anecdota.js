@@ -9,11 +9,7 @@ const anecdotaSchema = new Schema(
         descripcion: {
             type: String,
             required: true,
-        },
-        imagen: {
-            type: String,
-            required: true,
-        },
+        }
     },
     {
         // Agregar los campos createdAt y updatedAt

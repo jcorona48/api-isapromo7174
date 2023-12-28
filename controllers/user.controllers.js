@@ -1,6 +1,8 @@
 import User from "../models/User.js";
 import { filter } from "../helpers/Filter.js";
 import { generateToken } from "../utils/jwt.js";
+import { upload, destroyImage } from "../utils/cloudinary.js";
+import fs from "fs";
 
 // Obtener un usuario por su id
 export const getUsers = async (req, res) => {
@@ -27,6 +29,17 @@ export const getUserById = async (req, res) => {
 export const createUser = async (req, res) => {
     const { body } = req; // Obtener el body de la petición
 
+    if (req.files) {
+        const { foto } = req.files;
+        const result = await upload(foto.tempFilePath);
+        body.foto = {
+            img_url: result.secure_url,
+            img_id: result.public_id,
+        };
+
+        fs.unlinkSync(foto.tempFilePath);
+    }
+
     try {
         const user = await new User(body); // Crear un usuario en memoria
 
@@ -46,6 +59,17 @@ export const updateUserById = async (req, res) => {
     const { id } = req.params; // Obtener el id de los parámetros de la ruta
 
     const { body } = req; // Obtener el body de la petición
+
+    if (req.files) {
+        const { foto } = req.files;
+        const result = await upload(foto.tempFilePath);
+        body.foto = {
+            img_url: result.secure_url,
+            img_id: result.public_id,
+        };
+
+        fs.unlinkSync(foto.tempFilePath);
+    }
 
     try {
         const userUpdated = await User.findByIdAndUpdate(id, body, {
@@ -68,6 +92,9 @@ export const deleteUserById = async (req, res) => {
 
     try {
         const userDeleted = await User.findByIdAndDelete(id); // Buscar y eliminar usuario por id en la base de datos
+
+        if (userDeleted.foto.img_id)
+            await destroyImage(userDeleted.foto.img_id);
 
         if (!userDeleted)
             return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error

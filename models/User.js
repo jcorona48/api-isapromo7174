@@ -40,7 +40,8 @@ const userSchema = new Schema(
             required: true,
         },
         foto: {
-            type: String,
+            img_url: String,
+            img_id: String,
         },
         sexo: {
             type: String,

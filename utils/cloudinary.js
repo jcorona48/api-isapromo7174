@@ -11,9 +11,18 @@ cloudinary.config({
     api_key: CLOUDINARY_API_KEY,
     api_secret: CLOUDINARY_API_SECRET,
     cloud_name: CLOUDINARY_CLOUD_NAME,
+    secure: true,
 });
 
 // Subir imagen a Cloudinary
 export const upload = async (pathFile) => {
-    return await cloudinary.uploader.upload(pathFile);
+    return await cloudinary.uploader.upload(pathFile, {
+        folder: "GraduacionPage",
+    });
+};
+
+// Eliminar imagen de Cloudinary
+
+export const destroyImage = async (public_id) => {
+    return await cloudinary.uploader.destroy(public_id);
 };

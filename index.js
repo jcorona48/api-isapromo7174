@@ -32,17 +32,26 @@ app.use("/anecdota", anecdotaRoutes);
 app.use("/role", roleRoutes);
 
 app.post("/", async (req, res) => {
-    console.log(req.files);
-    const { foto } = req.files;
-    if (req.files) {
-        const result = await upload(foto.tempFilePath);
+    const data = req.body;
+    const files = req.files;
+    console.log(data);
+    /*   if (!files?.foto) res.status(400).send("No hay archivos"); */
 
-        console.log(result);
-    }
+    const { foto } = files;
+    const result = await upload(foto.tempFilePath);
 
-    await fs.unlinkSync(foto.tempFilePath);
+    console.log(result.secure_url);
 
-    res.send("Hello World!");
+    fs.unlinkSync(foto.tempFilePath);
+
+    res.json({
+        ...data,
+        foto: result,
+    });
+});
+
+app.get("/", (req, res) => {
+    res.send("Hola Mundo");
 });
 // Conectar a la base de datos
 connectDB();

@@ -9,7 +9,12 @@ const anecdotaSchema = new Schema(
         descripcion: {
             type: String,
             required: true,
-        }
+        },
+        usuario: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
     },
     {
         // Agregar los campos createdAt y updatedAt

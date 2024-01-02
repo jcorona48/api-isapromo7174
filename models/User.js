@@ -37,7 +37,6 @@ const userSchema = new Schema(
         },
         password: {
             type: String,
-            required: true,
         },
         foto: {
             img_url: String,
@@ -64,6 +63,9 @@ const userSchema = new Schema(
             type: String,
         },
         telefonoCasa: {
+            type: String,
+        },
+        descripcion: {
             type: String,
         },
         telefonoCelular: {

@@ -1,45 +1,42 @@
 import { filter } from "../helpers/Filter.js";
 import Anecdota from "../models/Anecdota.js";
 
-// Obtener un usuario por su id
+// Obtener todas las anecdotas
 export const getAnecdota = async (req, res) => {
-    const query = filter(req.body); // Obtener el query de filtrado
+    const anecdotas = await Anecdota.find().populate("usuario"); // Buscar anecdotas en la base de datos
 
-    const anecdotas = await Anecdota.find(query); // Buscar usuarios en la base de datos
-
-    res.json(anecdotas); // Retornar los usuarios
+    return res.json(anecdotas); // Retornar los anecdotas
 };
 
-// Obtener un usuario por su id
+// Obtener un anecdota por su id
 export const getAnecdotaById = async (req, res) => {
     const { id } = req.params; // Obtener el id de los parámetros de la ruta
 
-    const anecdota = await Anecdota.findById(id); // Buscar usuario por id en la base de datos
+    const anecdota = await Anecdota.findById(id).populate("usuario"); // Buscar anecdota por id en la base de datos
 
     if (!anecdota)
-        return res.status(404).json({ mensaje: "Anecdota no encontrada" }); // Si no existe el usuario, retornar un error
+        return res.status(404).json({ mensaje: "Anecdota no encontrada" }); // Si no existe el anecdota, retornar un error
 
-    res.json(anecdota); // Retornar el usuario
+    return res.json(anecdota); // Retornar el anecdota
 };
 
-
-// Crear un usuario
+// Crear un anecdota
 
 export const createAnecdota = async (req, res) => {
     const { body } = req; // Obtener el body de la petición
 
     try {
-        const anecdota = await new Anecdota(body); // Crear un usuario en memoria
+        const anecdota = await new Anecdota(body); // Crear un anecdota en memoria
 
-        await anecdota.save(); // Guardar usuario en la base de datos
+        await anecdota.save(); // Guardar anecdota en la base de datos
 
-        res.json(anecdota); // Retornar el usuario
+        return res.json(anecdota); // Retornar el anecdota
     } catch (error) {
-        res.status(500).json(error); // Retornar el error
+        return res.status(500).json(error); // Retornar el error
     }
 };
 
-// Actualizar un usuario por su id
+// Actualizar un anecdota por su id
 
 export const updateAnecdotaById = async (req, res) => {
     const { id } = req.params; // Obtener el id de los parámetros de la ruta
@@ -49,30 +46,30 @@ export const updateAnecdotaById = async (req, res) => {
     try {
         const anecdotaUpdated = await Anecdota.findByIdAndUpdate(id, body, {
             new: true,
-        }); // Buscar y actualizar usuario por id en la base de datos
+        }); // Buscar y actualizar anecdota por id en la base de datos
 
         if (!anecdotaUpdated)
-            return res.status(404).json({ mensaje: "Anecdota no encontrada" }); // Si no existe el usuario, retornar un error
+            return res.status(404).json({ mensaje: "Anecdota no encontrada" }); // Si no existe el anecdota, retornar un error
 
-        res.json(anecdotaUpdated); // Retornar el usuario actualizado
+        return res.json(anecdotaUpdated); // Retornar el anecdota actualizado
     } catch (error) {
-        res.status(500).json(error); // Retornar el error
+        return res.status(500).json(error); // Retornar el error
     }
 };
 
-// Eliminar un usuario por su id
+// Eliminar un anecdota por su id
 
 export const deleteAnecdotaById = async (req, res) => {
     const { id } = req.params; // Obtener el id de los parámetros de la ruta
 
     try {
-        const anecdotaDeleted = await Anecdota.findByIdAndDelete(id); // Buscar y eliminar usuario por id en la base de datos
+        const anecdotaDeleted = await Anecdota.findByIdAndDelete(id); // Buscar y eliminar anecdota por id en la base de datos
 
         if (!anecdotaDeleted)
-            return res.status(404).json({ mensaje: "Anecdota no encontrada" }); // Si no existe el usuario, retornar un error
+            return res.status(404).json({ mensaje: "Anecdota no encontrada" }); // Si no existe el anecdota, retornar un error
 
-        res.json(anecdotaDeleted); // Retornar el usuario eliminado
+        return res.json(anecdotaDeleted); // Retornar el anecdota eliminado
     } catch (error) {
-        res.status(500).json(error); // Retornar el error
+        return res.status(500).json(error); // Retornar el error
     }
 };

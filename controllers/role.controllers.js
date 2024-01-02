@@ -5,7 +5,7 @@ import Role from "../models/Role.js";
 export const getRoles = async (req, res) => {
     const roles = await Role.find(); // Buscar usuarios en la base de datos
 
-    res.json(roles); // Retornar los usuarios
+    return res.json(roles); // Retornar los usuarios
 };
 
 // Obtener un usuario por su id
@@ -16,7 +16,7 @@ export const getRoleById = async (req, res) => {
 
     if (!role) return res.status(404).json({ mensaje: "Rol no encontrado" }); // Si no existe el usuario, retornar un error
 
-    res.json(role); // Retornar el usuario
+    return res.json(role); // Retornar el usuario
 };
 
 // Crear un usuario
@@ -29,9 +29,9 @@ export const createRole = async (req, res) => {
 
         await role.save(); // Guardar usuario en la base de datos
 
-        res.json(role); // Retornar el usuario
+        return res.json(role); // Retornar el usuario
     } catch (error) {
-        res.status(500).json(error); // Retornar el error
+        return res.status(500).json(error); // Retornar el error
     }
 };
 
@@ -50,9 +50,9 @@ export const updateRoleById = async (req, res) => {
         if (!roleUpdated)
             return res.status(404).json({ mensaje: "Rol no encontrado" }); // Si no existe el usuario, retornar un error
 
-        res.json(roleUpdated); // Retornar el usuario actualizado
+        return res.json(roleUpdated); // Retornar el usuario actualizado
     } catch (error) {
-        res.status(500).json(error); // Retornar el error
+        return res.status(500).json(error); // Retornar el error
     }
 };
 
@@ -67,8 +67,8 @@ export const deleteRoleById = async (req, res) => {
         if (!roleDeleted)
             return res.status(404).json({ mensaje: "Rol no encontrado" }); // Si no existe el usuario, retornar un error
 
-        res.json(roleDeleted); // Retornar el usuario eliminado
+        return res.json(roleDeleted); // Retornar el usuario eliminado
     } catch (error) {
-        res.status(500).json(error); // Retornar el error
+        return res.status(500).json(error); // Retornar el error
     }
 };

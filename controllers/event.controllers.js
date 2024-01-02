@@ -7,7 +7,7 @@ export const getEvent = async (req, res) => {
 
     const events = await Event.find(query); // Buscar usuarios en la base de datos
 
-    res.json(events); // Retornar los usuarios
+    return res.json(events); // Retornar los usuarios
 };
 
 // Obtener un usuario por su id
@@ -19,9 +19,8 @@ export const getEventById = async (req, res) => {
     if (!event)
         return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error
 
-    res.json(event); // Retornar el usuario
+    return res.json(event); // Retornar el usuario
 };
-
 
 // Crear un usuario
 
@@ -33,9 +32,9 @@ export const createEvent = async (req, res) => {
 
         await event.save(); // Guardar usuario en la base de datos
 
-        res.json(event); // Retornar el usuario
+        return res.json(event); // Retornar el usuario
     } catch (error) {
-        res.status(500).json(error); // Retornar el error
+        return res.status(500).json(error); // Retornar el error
     }
 };
 
@@ -54,9 +53,9 @@ export const updateEventById = async (req, res) => {
         if (!eventUpdated)
             return res.status(404).json({ mensaje: "Evento no encontrado" }); // Si no existe el usuario, retornar un error
 
-        res.json(eventUpdated); // Retornar el usuario actualizado
+        return res.json(eventUpdated); // Retornar el usuario actualizado
     } catch (error) {
-        res.status(500).json(error); // Retornar el error
+        return res.status(500).json(error); // Retornar el error
     }
 };
 
@@ -71,8 +70,8 @@ export const deleteEventById = async (req, res) => {
         if (!eventDeleted)
             return res.status(404).json({ mensaje: "Evento no encontrado" }); // Si no existe el usuario, retornar un error
 
-        res.json(eventDeleted); // Retornar el usuario eliminado
+        return res.json(eventDeleted); // Retornar el usuario eliminado
     } catch (error) {
-        res.status(500).json(error); // Retornar el error
+        return res.status(500).json(error); // Retornar el error
     }
 };

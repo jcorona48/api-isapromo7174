@@ -8,7 +8,7 @@ import fs from "fs";
 export const getUsers = async (req, res) => {
     const users = await User.find().populate("rol"); // Buscar usuarios en la base de datos
 
-    res.json(users); // Retornar los usuarios
+    return res.json(users); // Retornar los usuarios
 };
 
 // Obtener un usuario por su id
@@ -21,57 +21,59 @@ export const getUserById = async (req, res) => {
     if (!user)
         return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error
 
-    res.json(user); // Retornar el usuario
+    return res.json(user); // Retornar el usuario
 };
 
 // Crear un usuario
 
 export const createUser = async (req, res) => {
-    const { body } = req; // Obtener el body de la petición
-
-    if (req.files) {
-        const { foto } = req.files;
-        const result = await upload(foto.tempFilePath);
-        body.foto = {
-            img_url: result.secure_url,
-            img_id: result.public_id,
-        };
-
-        fs.unlinkSync(foto.tempFilePath);
-    }
-
     try {
+        const { body } = req; // Obtener el body de la petición
+
+        if (req.files) {
+            const { foto } = req.files;
+            const result = await upload(foto.tempFilePath);
+            body.foto = {
+                img_url: result.secure_url,
+                img_id: result.public_id,
+            };
+
+            fs.unlinkSync(foto.tempFilePath);
+        }
+
         const user = await new User(body); // Crear un usuario en memoria
 
-        user.password = await User.encryptPassword(user.password); // Cifrar la contraseña
+        if (user?.password)
+            user.password = await User.encryptPassword(user.password); // Cifrar la contraseña
 
         await user.save(); // Guardar usuario en la base de datos
 
-        res.json(user); // Retornar el usuario
+        return res.json(user); // Retornar el usuario
     } catch (error) {
-        res.status(500).json(error); // Retornar el error
+        console.log(error);
+        return res.status(500).json(error); // Retornar el error
     }
 };
 
 // Actualizar un usuario por su id
 
 export const updateUserById = async (req, res) => {
-    const { id } = req.params; // Obtener el id de los parámetros de la ruta
-
-    const { body } = req; // Obtener el body de la petición
-
-    if (req.files) {
-        const { foto } = req.files;
-        const result = await upload(foto.tempFilePath);
-        body.foto = {
-            img_url: result.secure_url,
-            img_id: result.public_id,
-        };
-
-        fs.unlinkSync(foto.tempFilePath);
-    }
-
     try {
+        const { id } = req.params; // Obtener el id de los parámetros de la ruta
+
+        const { body } = req; // Obtener el body de la petición
+
+        if (req.files) {
+            const { foto } = req.files;
+            const result = await upload(foto.tempFilePath);
+            body.foto = {
+                img_url: result.secure_url,
+                img_id: result.public_id,
+            };
+
+            fs.unlinkSync(foto.tempFilePath);
+        }
+
         const userUpdated = await User.findByIdAndUpdate(id, body, {
             new: true,
         }).populate("rol"); // Buscar y actualizar usuario por id en la base de datos
@@ -79,9 +81,9 @@ export const updateUserById = async (req, res) => {
         if (!userUpdated)
             return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error
 
-        res.json(userUpdated); // Retornar el usuario actualizado
+        return res.json(userUpdated); // Retornar el usuario actualizado
     } catch (error) {
-        res.status(500).json(error); // Retornar el error
+        return res.status(500).json(error); // Retornar el error
     }
 };
 
@@ -92,16 +94,15 @@ export const deleteUserById = async (req, res) => {
 
     try {
         const userDeleted = await User.findByIdAndDelete(id); // Buscar y eliminar usuario por id en la base de datos
+        if (!userDeleted)
+            return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error
 
         if (userDeleted.foto.img_id)
             await destroyImage(userDeleted.foto.img_id);
 
-        if (!userDeleted)
-            return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error
-
-        res.json(userDeleted); // Retornar el usuario eliminado
+        return res.json(userDeleted); // Retornar el usuario eliminado
     } catch (error) {
-        res.status(500).json(error); // Retornar el error
+        return res.status(500).json(error); // Retornar el error
     }
 };
 
@@ -122,7 +123,7 @@ export const login = async (req, res) => {
 
     const token = generateToken(user); // Generar token
 
-    res.json({ user, token }); // Retornar usuario y token
+    return res.json({ user, token }); // Retornar usuario y token
 };
 
 export const getUserByToken = async (req, res) => {
@@ -131,5 +132,5 @@ export const getUserByToken = async (req, res) => {
     if (!user)
         return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Si no existe el usuario, retornar un error
 
-    res.json(user); // Retornar el usuario
+    return res.json(user); // Retornar el usuario
 };
